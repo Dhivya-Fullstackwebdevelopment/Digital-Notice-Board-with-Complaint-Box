@@ -12,7 +12,6 @@ import {
 } from "react-icons/fi";
 import { GiGraduateCap } from "react-icons/gi";
 import Navbar from "../../Components/Navbar";
-import buildingBg from "../../assests/buildingimg.png";
 import networkVideo from "../../videos/herobg.mp4";
 
 const MOCK_NOTICES = [

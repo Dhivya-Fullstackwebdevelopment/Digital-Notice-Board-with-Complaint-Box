@@ -8,12 +8,6 @@ interface NavItem {
     href: string;
 }
 
-interface PillNavProps {
-    logoComponent?: React.ReactNode;
-    items: NavItem[];
-    activeHref: string;
-}
-
 const PillNav = ({ items, activeHref }: { items: NavItem[], activeHref: string }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const tlRefs = useRef<Map<number, gsap.core.Timeline>>(new Map());
@@ -53,8 +47,6 @@ const PillNav = ({ items, activeHref }: { items: NavItem[], activeHref: string }
             tlRefs.current.set(index, tl);
         });
     }, [items]);
-
-    const isActive = (path: string) => activeHref === path || (activeHref === '/' && path === '/Home');
 
     return (
         <div ref={containerRef} className="flex items-center">

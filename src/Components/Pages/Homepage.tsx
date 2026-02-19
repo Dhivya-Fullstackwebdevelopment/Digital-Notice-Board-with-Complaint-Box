@@ -7,7 +7,6 @@ import {
     FiSend,
     FiZap,
     FiUsers,
-    FiCheckCircle,
     FiMessageSquare,
     FiGlobe
 } from "react-icons/fi";
@@ -42,7 +41,7 @@ const MOCK_NOTICES = [
 export default function Home() {
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100 overflow-x-hidden">
-            <Navbar hideNav={false} />
+            <Navbar />
 
             {/* 1. HERO SECTION */}
             <section className="relative min-h-[85vh] flex items-center justify-center pt-32 pb-20 px-6 overflow-hidden">

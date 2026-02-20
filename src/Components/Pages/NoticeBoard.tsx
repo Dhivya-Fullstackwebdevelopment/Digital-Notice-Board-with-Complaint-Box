@@ -7,6 +7,14 @@ import { motion } from "framer-motion";
 const ALL_NOTICES = [
     { id: "1", title: "End Semester Examination Schedule", category: "Academic", date: "Oct 24, 2025", content: "Schedule is out now. Please check the department portal for details." },
     { id: "2", title: "Annual Cultural Fest", category: "Event", date: "Oct 22, 2025", content: "Registrations open for Utopia 2025. Sign up now!" },
+    { id: "1", title: "End Semester Examination Schedule", category: "Academic", date: "Oct 24, 2025", content: "Schedule is out now. Please check the department portal for details." },
+    { id: "2", title: "Annual Cultural Fest", category: "Event", date: "Oct 22, 2025", content: "Registrations open for Utopia 2025. Sign up now!" },
+    { id: "1", title: "End Semester Examination Schedule", category: "Academic", date: "Oct 24, 2025", content: "Schedule is out now. Please check the department portal for details." },
+    { id: "2", title: "Annual Cultural Fest", category: "Event", date: "Oct 22, 2025", content: "Registrations open for Utopia 2025. Sign up now!" },
+    { id: "1", title: "End Semester Examination Schedule", category: "Academic", date: "Oct 24, 2025", content: "Schedule is out now. Please check the department portal for details." },
+    { id: "2", title: "Annual Cultural Fest", category: "Event", date: "Oct 22, 2025", content: "Registrations open for Utopia 2025. Sign up now!" },
+    { id: "1", title: "End Semester Examination Schedule", category: "Academic", date: "Oct 24, 2025", content: "Schedule is out now. Please check the department portal for details." },
+    { id: "2", title: "Annual Cultural Fest", category: "Event", date: "Oct 22, 2025", content: "Registrations open for Utopia 2025. Sign up now!" },
 ];
 
 export default function Notices() {
@@ -43,7 +51,6 @@ export default function Notices() {
                         <input
                             type="text"
                             placeholder="Search..."
-                            /* bg-slate-100 for grey background, text-black for typed text, placeholder-slate-400 for grey placeholder */
                             className="w-full pl-11 pr-6 py-3 bg-white border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all text-sm font-medium text-black placeholder-slate-400 shadow-inner"
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -52,7 +59,7 @@ export default function Notices() {
 
                 {/* Custom Tabs with Shadow Line */}
                 <div className="relative mb-8">
-                    <div className="flex gap-3  overflow-x-auto scrollbar-hide pb-3 relative z-10">
+                    <div className="flex flex-wrap gap-3 pb-3 relative z-10">
                         {categories.map((tab) => (
                             <button
                                 key={tab}
@@ -67,8 +74,7 @@ export default function Notices() {
                         ))}
                     </div>
                     {/* Shadow Line: A subtle border with an outer shadow for depth */}
-                   <div className="absolute bottom-[11px] left-[-50rem] right-[-50rem] h-[1px] bg-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.08)]" />
-                </div>
+                    <div className="absolute bottom-[11px] left-0 right-0 h-[1px] bg-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.08)]" />                </div>
 
                 {/* Notices Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">

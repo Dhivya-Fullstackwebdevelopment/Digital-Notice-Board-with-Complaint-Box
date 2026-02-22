@@ -1,7 +1,44 @@
 import { useState } from "react";
-import { FiSend, FiLock, FiUser } from "react-icons/fi";
+import { FiSend, FiLock, FiUser, FiChevronDown } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../Navbar";
+
+// Move long lists to constants to keep the component clean
+const CATEGORIES = [
+    { id: "1", label: "Internal Marks Issue" },
+    { id: "2", label: "Attendance Shortage Dispute" },
+    { id: "3", label: "Exam Timetable Conflict" },
+    { id: "4", label: "Result Correction Request" },
+    { id: "5", label: "Faculty Behavior Complaint" },
+    { id: "6", label: "Project Evaluation Issue" },
+    { id: "7", label: "Ragging Complaint" },
+    { id: "8", label: "Verbal Harassment" },
+    { id: "9", label: "Physical Harassment" },
+    { id: "10", label: "Cyber Bullying" },
+    { id: "11", label: "Sexual Harassment" },
+    { id: "12", label: "Gender Discrimination" },
+    { id: "13", label: "Classroom Maintenance" },
+    { id: "14", label: "Washroom Cleanliness" },
+    { id: "15", label: "Drinking Water Problem" },
+    { id: "16", label: "Electrical Issue" },
+    { id: "17", label: "Hostel Room Allocation" },
+    { id: "18", label: "Hostel Food Quality" },
+    { id: "19", label: "Hostel WiFi Problem" },
+    { id: "20", label: "Library Resources" },
+    { id: "22", label: "Bus/Transport Issue" },
+    { id: "24", label: "Certificate Delay" },
+    { id: "25", label: "Scholarship Issue" },
+    { id: "27", label: "Portal/IT Login Issue" },
+    { id: "30", label: "Campus Security Concern" },
+    { id: "99", label: "Other" },
+];
+
+const DEPARTMENTS = [
+    "Computer Science & Engineering", "Information Technology", 
+    "Electronics & Communication", "Electrical & Electronics", 
+    "Mechanical Engineering", "Civil Engineering", 
+    "Artificial Intelligence", "MBA", "BBA", "B.Com", "Other"
+];
 
 export default function ComplaintBox() {
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -14,29 +51,34 @@ export default function ComplaintBox() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-200">
+        <div className="min-h-screen bg-slate-50 relative overflow-hidden font-sans">
+            {/* THEME LAYER: Subtle Grid & Radial Glows */}
+            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
+                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23000' stroke-width='1'%3E%3Cpath d='M36 34v-4H20v4H15V20h4v-5h10v5h5v10h10V15h10v15h-5v4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} 
+            />
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-200/40 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-200/40 rounded-full blur-[120px] pointer-events-none" />
+
             <Navbar />
 
-            <div className="max-w-3xl mx-auto pt-28 px-6 pb-20">
-
-                {/* Header */}
+            <div className="relative z-10 max-w-3xl mx-auto pt-28 px-6 pb-20">
+                {/* Header Section */}
                 <div className="text-center mb-12">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-2 px-5 py-2 bg-red-100 text-red-600 text-xs font-semibold tracking-wider rounded-full border border-red-200 mb-5"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 bg-white text-red-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-red-100 shadow-sm mb-6"
                     >
-                        <FiLock size={14} />
+                        <FiLock size={12} className="fill-red-50" />
                         Anonymous & Secure
                     </motion.div>
 
-                    <h1 className="text-4xl font-bold text-slate-900 mb-4">
-                        Secure Complaint Box
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+                        Secure <span className="text-blue-600">Complaint Box</span>
                     </h1>
 
-                    <p className="text-slate-500 text-base max-w-xl mx-auto">
-                        Report ragging, harassment, or facility issues safely.
-                        Your identity remains protected and confidential.
+                    <p className="text-slate-500 text-lg max-w-xl mx-auto font-medium">
+                        Your identity is protected by default. Reporting issues helps us build a safer campus for everyone.
                     </p>
                 </div>
 
@@ -44,195 +86,108 @@ export default function ComplaintBox() {
                     {!isSubmitted ? (
                         <motion.div
                             key="form"
-                            initial={{ opacity: 0, y: 40 }}
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.4 }}
+                            className="backdrop-blur-xl bg-white/70 border border-white shadow-2xl rounded-[3rem] p-8 md:p-12"
                         >
-                            <div className="backdrop-blur-lg bg-white/80 border border-white/40 shadow-2xl rounded-[2.5rem] p-8 md:p-10">
-
-                                <h2 className="text-xl font-semibold text-slate-800 mb-6">
-                                    File a New Report
-                                </h2>
-
-                                <form onSubmit={handleSubmit} className="space-y-6">
-
-                                    {/* Name */}
-                                    <div>
-                                        <label className="text-sm font-medium text-slate-600">
-                                            Full Name (Optional)
-                                        </label>
-                                        <div className="relative mt-2">
-                                            <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                                            <input
-                                                type="text"
-                                                placeholder="Leave blank to remain anonymous"
-                                                className="w-full pl-11 pr-4 py-3 border  placeholder:text-gray-400 text-black border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Category + Department */}
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="text-sm font-medium text-slate-600">
-                                                Issue Category
-                                            </label>
-                                            <select
-                                                value={category}
-                                                onChange={(e) => setCategory(e.target.value)}
-                                                className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-xl bg-white text-black focus:ring-2 focus:ring-blue-500 outline-none transition">
-                                                <option value="">Select Issue Category</option>
-
-                                                <option value="1">Internal Marks Issue</option>
-                                                <option value="2">Attendance Shortage Dispute</option>
-                                                <option value="3">Exam Timetable Conflict</option>
-                                                <option value="4">Result Correction Request</option>
-                                                <option value="5">Faculty Behavior Complaint</option>
-                                                <option value="6">Project Evaluation Issue</option>
-
-                                                <option value="7">Ragging Complaint</option>
-                                                <option value="8">Verbal Harassment</option>
-                                                <option value="9">Physical Harassment</option>
-                                                <option value="10">Cyber Bullying</option>
-
-                                                <option value="11">Sexual Harassment</option>
-                                                <option value="12">Gender Discrimination</option>
-
-                                                <option value="13"> Classroom Maintenance Issue</option>
-                                                <option value="14">Washroom Cleanliness</option>
-                                                <option value="15">Drinking Water Problem</option>
-                                                <option value="16">Electrical Issue</option>
-
-                                                <option value="17"> Hostel Room Allocation</option>
-                                                <option value="18">Hostel Food Quality</option>
-                                                <option value="19">Hostel WiFi Problem</option>
-
-                                                <option value="20">Library Book Not Available</option>
-                                                <option value="21">Library Fine Issue</option>
-
-                                                <option value="22">Bus Timing Issue</option>
-                                                <option value="23">Driver Behavior Complaint</option>
-
-                                                <option value="24">Certificate Delay</option>
-                                                <option value="25">Scholarship Issue</option>
-                                                <option value="26">Fee Payment Problem</option>
-
-                                                <option value="27">Portal Login Issue</option>
-                                                <option value="28"> Lab System Not Working</option>
-                                                <option value="29"> Internet Connectivity Issue</option>
-
-                                                <option value="30"> Campus Security Concern</option>
-                                                <option value="31">CCTV Not Working</option>
-
-                                                <option value="99">Other</option>
-                                            </select>
-                                        </div>
-
-                                        {category === "99" && (
-                                            <div>
-                                                <label className="text-sm font-medium text-slate-600">
-                                                    Specify Other Issue
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Enter your issue category"
-                                                    className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-xl bg-white text-black placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                                                />
-                                            </div>
-                                        )}
-                                        <div>
-                                            <label className="text-sm font-medium text-slate-600">
-                                                Department
-                                            </label>
-                                            <select
-                                                value={department}
-                                                onChange={(e) => setDepartment(e.target.value)}
-                                                className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-xl bg-white text-black focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                            >
-                                                <option value="">Select Department</option>
-
-                                                <option value="1">Computer Science & Engineering</option>
-                                                <option value="2">Information Technology</option>
-                                                <option value="3">Electronics & Communication</option>
-                                                <option value="4">Electrical & Electronics</option>
-                                                <option value="5">Mechanical Engineering</option>
-                                                <option value="6">Civil Engineering</option>
-                                                <option value="7">Artificial Intelligence</option>
-                                                <option value="8">MBA</option>
-                                                <option value="9">BBA</option>
-                                                <option value="10">B.Com</option>
-                                                <option value="11">M.Com</option>
-                                                <option value="12">English</option>
-                                                <option value="13">Mathematics</option>
-
-                                                <option value="99">Other</option>
-                                            </select>
-                                        </div>
-                                        {department === "99" && (
-                                            <div>
-                                                <label className="text-sm font-medium text-slate-600">
-                                                    Specify Department
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Enter your department"
-                                                    className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-xl bg-white text-black placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-
-
-                                    {/* Subject */}
-                                    <div>
-                                        <label className="text-sm font-medium text-slate-600">
-                                            Subject
-                                        </label>
+                            <form onSubmit={handleSubmit} className="space-y-8">
+                                
+                                {/* Name Field */}
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Identity Status</label>
+                                    <div className="relative group">
+                                        <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                                         <input
                                             type="text"
-                                            placeholder="Brief summary of the issue"
-                                            className="w-full mt-2 px-4 py-3 border text-black placeholder:text-gray-400  border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                                            placeholder="Leave blank to remain 100% anonymous"
+                                            className="w-full pl-12 pr-4 py-4 border border-slate-200 rounded-2xl bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all placeholder:text-slate-400 text-slate-900 shadow-sm"
                                         />
                                     </div>
+                                </div>
 
-                                    {/* Description */}
-                                    <div>
-                                        <label className="text-sm font-medium text-slate-600">
-                                            Detailed Description
-                                        </label>
-                                        <textarea
-                                            rows={5}
-                                            placeholder="Describe the incident, location, and people involved..."
-                                            className="w-full mt-2 px-4 py-3 border text-black placeholder:text-gray-400  border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
-                                        />
+                                {/* Select Grid */}
+                                <div className="grid md:grid-cols-2 gap-8">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Issue Category</label>
+                                        <select
+                                            value={category}
+                                            onChange={(e) => setCategory(e.target.value)}
+                                            className="w-full px-4 py-4 border border-slate-200 rounded-2xl bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-slate-900 shadow-sm appearance-none cursor-pointer"
+                                        >
+                                            <option value="">Select Category</option>
+                                            {CATEGORIES.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
+                                        </select>
                                     </div>
 
-                                    {/* Submit Button */}
-                                    <motion.button
-                                        whileHover={{ scale: 1.03 }}
-                                        whileTap={{ scale: 0.97 }}
-                                        type="submit"
-                                        className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-300 transition flex items-center justify-center gap-2"
-                                    >
-                                        Submit Report
-                                        <FiSend />
-                                    </motion.button>
-                                </form>
-                            </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Department</label>
+                                        <select
+                                            value={department}
+                                            onChange={(e) => setDepartment(e.target.value)}
+                                            className="w-full px-4 py-4 border border-slate-200 rounded-2xl bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-slate-900 shadow-sm appearance-none cursor-pointer"
+                                        >
+                                            <option value="">Select Dept</option>
+                                            {DEPARTMENTS.map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Subject */}
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Subject</label>
+                                    <input
+                                        required
+                                        type="text"
+                                        placeholder="E.g. Electrical failure in Block B"
+                                        className="w-full px-6 py-4 border border-slate-200 rounded-2xl bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-slate-900 shadow-sm"
+                                    />
+                                </div>
+
+                                {/* Description */}
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Description</label>
+                                    <textarea
+                                        required
+                                        rows={5}
+                                        placeholder="Provide as much detail as possible. Location, time, and specific incident details help us resolve it faster."
+                                        className="w-full px-6 py-4 border border-slate-200 rounded-2xl bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-slate-900 shadow-sm resize-none"
+                                    />
+                                </div>
+
+                                {/* Submit */}
+                                <motion.button
+                                    whileHover={{ y: -2 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    type="submit"
+                                    className="w-full py-5 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-3 text-lg"
+                                >
+                                    Submit Report
+                                    <FiSend />
+                                </motion.button>
+                            </form>
                         </motion.div>
                     ) : (
                         <motion.div
                             key="success"
-                            initial={{ opacity: 0, scale: 0.8 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="text-center py-16 bg-white rounded-3xl shadow-xl"
+                            className="text-center py-20 px-8 bg-white border border-slate-100 rounded-[3rem] shadow-2xl"
                         >
-                            <div className="text-green-500 text-5xl mb-4">✔</div>
-                            <h2 className="text-2xl font-semibold mb-3">Report Submitted</h2>
-                            <p className="text-slate-500">
-                                Your complaint has been securely submitted.
+                            <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+                                <span className="text-3xl font-bold">✓</span>
+                            </div>
+                            <h2 className="text-3xl font-bold text-slate-900 mb-4">Report Received</h2>
+                            <p className="text-slate-500 text-lg leading-relaxed max-w-sm mx-auto">
+                                Thank you for your feedback. Your report has been encrypted and sent to the administration.
                             </p>
+                            <button 
+                                onClick={() => setIsSubmitted(false)}
+                                className="mt-10 text-blue-600 font-bold hover:underline"
+                            >
+                                File another report
+                            </button>
                         </motion.div>
                     )}
                 </AnimatePresence>

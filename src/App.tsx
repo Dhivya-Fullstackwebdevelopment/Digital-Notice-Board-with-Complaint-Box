@@ -5,6 +5,7 @@ import StudentLogin from "./Components/Pages/Studentlogin";
 import Homepage from "./Components/Pages/Homepage";
 import NoticeBoard from "./Components/Pages/NoticeBoard";
 import ComplaintBox from "./Components/Pages/ComplaintBox";
+import ComplaintStatus from "./Components/Pages/ComplaintStatus";
 
 
 // Layout for Login Page
@@ -45,6 +46,7 @@ function App() {
           <Route path="/Home" element={<Homepage />} />
           <Route path="/Notices" element={<NoticeBoard />} />
           <Route path="/ComplaintBox" element={<ComplaintBox />} />
+          <Route path="/ComplaintStatus" element={<ComplaintStatus />} />
         </Route>
 
         {/* 404 */}

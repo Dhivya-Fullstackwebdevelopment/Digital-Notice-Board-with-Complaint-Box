@@ -13,6 +13,7 @@ const Navbar = () => {
         { label: 'Home', href: '/Home' },
         { label: 'Notice', href: '/Notices' },
         { label: 'Complaint', href: '/ComplaintBox' },
+        { label: 'Complaint Status', href: '/ComplaintStatus' },
     ];
 
     return (

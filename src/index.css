@@ -91,13 +91,16 @@ nav {
 @layer utilities {
   .scrollbar-light {
     scrollbar-width: thin;
-    scrollbar-color: #e2e8f0 transparent; /* thumb color | track color */
+    scrollbar-color: #e2e8f0 transparent;
+    /* thumb color | track color */
   }
 
   /* For Chrome, Safari, and Edge */
   .scrollbar-light::-webkit-scrollbar {
-    height: 5px; /* Height for horizontal scroll */
-    width: 5px;  /* Width for vertical scroll */
+    height: 5px;
+    /* Height for horizontal scroll */
+    width: 5px;
+    /* Width for vertical scroll */
   }
 
   .scrollbar-light::-webkit-scrollbar-track {
@@ -105,12 +108,17 @@ nav {
   }
 
   .scrollbar-light::-webkit-scrollbar-thumb {
-    background-color: #f1f5f9; /* Light slate color */
+    background-color: #f1f5f9;
+    /* Light slate color */
     border-radius: 20px;
     border: 1px solid transparent;
   }
 
   .scrollbar-light:hover::-webkit-scrollbar-thumb {
-    background-color: #e2e8f0; 
+    background-color: #e2e8f0;
+  }
+
+  .mask-fade {
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
   }
 }

@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 const ALL_NOTICES = [
     { id: "1", title: "End Semester Examination Schedule", category: "Academic", date: "Oct 24, 2025", content: "Schedule is out now. Please check the department portal for details." },
     { id: "2", title: "Annual Cultural Fest", category: "Event", date: "Oct 22, 2025", content: "Registrations open for Utopia 2025. Sign up now!" },
-
 ];
 
 export default function Notices() {
@@ -42,7 +41,6 @@ export default function Notices() {
 
     return (
         <div className="min-h-screen bg-slate-50 relative overflow-hidden font-sans pb-20">
-            {/* THEME LAYER*/}
             <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23000' stroke-width='1'%3E%3Cpath d='M36 34v-4H20v4H15V20h4v-5h10v5h5v10h10V15h10v15h-5v4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}
             />
@@ -67,7 +65,6 @@ export default function Notices() {
                         </h1>
                     </div>
 
-                    {/* Themed Search Bar */}
                     <div className="relative w-full md:w-96 group">
                         <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors z-10" size={18} />
                         <input
@@ -81,15 +78,14 @@ export default function Notices() {
 
                 {/* Tabs Section */}
                 <div className="relative mb-10">
-                    <div className="flex overflow-x-auto gap-3 pb-4 relative z-10 
-                    scrollbar-light">
+                    <div className="flex overflow-x-auto flex-nowrap gap-4 pb-6 pt-2 px-2 relative z-10 scrollbar-light">
                         {categories.map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`px-8 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap border ${activeTab === tab
-                                    ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-200 scale-105"
-                                    : "bg-white text-slate-400 border-slate-100 hover:text-blue-600 shadow-sm"
+                                className={`px-8 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap border shrink-0 ${activeTab === tab
+                                        ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-300/50 scale-105"
+                                        : "bg-white text-slate-400 border-slate-100 hover:text-blue-600 shadow-sm hover:shadow-md"
                                     }`}
                             >
                                 {tab}
@@ -122,7 +118,6 @@ export default function Notices() {
                     </AnimatePresence>
                 </motion.div>
 
-                {/* Empty State */}
                 {filteredNotices.length === 0 && (
                     <div className="text-center py-20">
                         <p className="text-slate-400 font-medium">No notices found matching your criteria.</p>

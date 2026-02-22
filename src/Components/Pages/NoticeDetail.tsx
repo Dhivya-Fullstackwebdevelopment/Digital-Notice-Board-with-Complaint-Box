@@ -111,13 +111,6 @@ The event will span three days, starting with a grand inaugural ceremony in the 
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0"> <FiClock size={18} /> </div>
-                        <div>
-                            <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Read Time</p>
-                            <p className="text-xs font-black text-slate-800">4 Minutes</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"> <FiBookmark size={18} /> </div>
                         <div>
                             <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Issuing Body</p>

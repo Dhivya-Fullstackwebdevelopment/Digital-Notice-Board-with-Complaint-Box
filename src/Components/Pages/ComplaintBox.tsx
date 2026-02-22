@@ -34,9 +34,9 @@ const CATEGORIES = [
 ];
 
 const DEPARTMENTS = [
-    "Computer Science & Engineering", "Information Technology", 
-    "Electronics & Communication", "Electrical & Electronics", 
-    "Mechanical Engineering", "Civil Engineering", 
+    "Computer Science & Engineering", "Information Technology",
+    "Electronics & Communication", "Electrical & Electronics",
+    "Mechanical Engineering", "Civil Engineering",
     "Artificial Intelligence", "MBA", "BBA", "B.Com", "Other"
 ];
 
@@ -44,6 +44,12 @@ export default function ComplaintBox() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [category, setCategory] = useState("");
     const [department, setDepartment] = useState("");
+    const [catSearch, setCatSearch] = useState("");
+    const [isCatOpen, setIsCatOpen] = useState(false);
+    const [deptSearch, setDeptSearch] = useState("");
+    const [isDeptOpen, setIsDeptOpen] = useState(false);
+    const filteredCats = CATEGORIES.filter(c => c.label.toLowerCase().includes(catSearch.toLowerCase()));
+    const filteredDepts = DEPARTMENTS.filter(d => d.toLowerCase().includes(deptSearch.toLowerCase()));
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -53,8 +59,8 @@ export default function ComplaintBox() {
     return (
         <div className="min-h-screen bg-slate-50 relative overflow-hidden font-sans">
             {/* THEME LAYER: Subtle Grid & Radial Glows */}
-            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23000' stroke-width='1'%3E%3Cpath d='M36 34v-4H20v4H15V20h4v-5h10v5h5v10h10V15h10v15h-5v4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} 
+            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23000' stroke-width='1'%3E%3Cpath d='M36 34v-4H20v4H15V20h4v-5h10v5h5v10h10V15h10v15h-5v4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}
             />
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-200/40 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-200/40 rounded-full blur-[120px] pointer-events-none" />
@@ -93,7 +99,7 @@ export default function ComplaintBox() {
                             className="backdrop-blur-xl bg-white/70 border border-white shadow-2xl rounded-[3rem] p-8 md:p-12"
                         >
                             <form onSubmit={handleSubmit} className="space-y-8">
-                                
+
                                 {/* Name Field */}
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Identity Status</label>
@@ -119,8 +125,23 @@ export default function ComplaintBox() {
                                             <option value="">Select Category</option>
                                             {CATEGORIES.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
                                         </select>
+
+                                        <AnimatePresence>
+                                            {category === "99" && (
+                                                <motion.input
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: "auto" }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    type="text"
+                                                    placeholder="Please specify category"
+                                                    className="w-full mt-2 px-4 py-3 border text-black  placeholder-gray-500 border-blue-200 rounded-xl bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm"
+                                                    required
+                                                />
+                                            )}
+                                        </AnimatePresence>
                                     </div>
 
+                                    {/* Department Selection */}
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Department</label>
                                         <select
@@ -131,6 +152,21 @@ export default function ComplaintBox() {
                                             <option value="">Select Dept</option>
                                             {DEPARTMENTS.map(dept => <option key={dept} value={dept}>{dept}</option>)}
                                         </select>
+
+                                        {/* NEW: Conditional Department Input */}
+                                        <AnimatePresence>
+                                            {department === "Other" && (
+                                                <motion.input
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: "auto" }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    type="text"
+                                                    placeholder="Please specify department"
+                                                    className="w-full mt-2 px-4 py-3 border text-black placeholder-gray-500 border-blue-200 rounded-xl bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm"
+                                                    required
+                                                />
+                                            )}
+                                        </AnimatePresence>
                                     </div>
                                 </div>
 
@@ -182,7 +218,7 @@ export default function ComplaintBox() {
                             <p className="text-slate-500 text-lg leading-relaxed max-w-sm mx-auto">
                                 Thank you for your feedback. Your report has been encrypted and sent to the administration.
                             </p>
-                            <button 
+                            <button
                                 onClick={() => setIsSubmitted(false)}
                                 className="mt-10 text-blue-600 font-bold hover:underline"
                             >

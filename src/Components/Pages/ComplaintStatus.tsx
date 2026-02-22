@@ -57,7 +57,7 @@ export default function ComplaintStatus() {
 
     return (
         <div className="min-h-screen bg-slate-50 relative overflow-hidden font-sans">
-            {/* THEME LAYER: Match patterns from Complaint Box */}
+            {/* THEME LAYER */}
             <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23000' stroke-width='1'%3E%3Cpath d='M36 34v-4H20v4H15V20h4v-5h10v5h5v10h10V15h10v15h-5v4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}
             />

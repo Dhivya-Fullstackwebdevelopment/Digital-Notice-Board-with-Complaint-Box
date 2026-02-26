@@ -92,15 +92,11 @@ nav {
   .scrollbar-light {
     scrollbar-width: thin;
     scrollbar-color: #e2e8f0 transparent;
-    /* thumb color | track color */
   }
 
-  /* For Chrome, Safari, and Edge */
   .scrollbar-light::-webkit-scrollbar {
     height: 5px;
-    /* Height for horizontal scroll */
     width: 5px;
-    /* Width for vertical scroll */
   }
 
   .scrollbar-light::-webkit-scrollbar-track {
@@ -109,7 +105,6 @@ nav {
 
   .scrollbar-light::-webkit-scrollbar-thumb {
     background-color: #f1f5f9;
-    /* Light slate color */
     border-radius: 20px;
     border: 1px solid transparent;
   }

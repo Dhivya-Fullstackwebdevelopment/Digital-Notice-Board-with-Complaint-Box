@@ -3,7 +3,6 @@ import { FiSend, FiLock, FiUser } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../Navbar";
 
-// Move long lists to constants to keep the component clean
 const CATEGORIES = [
     { id: "1", label: "Internal Marks Issue" },
     { id: "2", label: "Attendance Shortage Dispute" },
@@ -34,22 +33,23 @@ const CATEGORIES = [
 ];
 
 const DEPARTMENTS = [
-    "Computer Science & Engineering", "Information Technology",
-    "Electronics & Communication", "Electrical & Electronics",
-    "Mechanical Engineering", "Civil Engineering",
-    "Artificial Intelligence", "MBA", "BBA", "B.Com", "Other"
+    { id: "1", label: "Computer Science & Engineering" },
+    { id: "2", label: "Information Technology" },
+    { id: "3", label: "Electronics & Communication" },
+    { id: "4", label: "Electrical & Electronics" },
+    { id: "5", label: "Mechanical Engineering" },
+    { id: "6", label: "Civil Engineering" },
+    { id: "7", label: "Artificial Intelligence" },
+    { id: "8", label: "MBA" },
+    { id: "9", label: "BBA" },
+    { id: "10", label: "B.Com" },
+    { id: "99", label: "Other" }
 ];
 
 export default function ComplaintBox() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [category, setCategory] = useState("");
     const [department, setDepartment] = useState("");
-    const [catSearch, setCatSearch] = useState("");
-    const [isCatOpen, setIsCatOpen] = useState(false);
-    const [deptSearch, setDeptSearch] = useState("");
-    const [isDeptOpen, setIsDeptOpen] = useState(false);
-    const filteredCats = CATEGORIES.filter(c => c.label.toLowerCase().includes(catSearch.toLowerCase()));
-    const filteredDepts = DEPARTMENTS.filter(d => d.toLowerCase().includes(deptSearch.toLowerCase()));
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -141,21 +141,26 @@ export default function ComplaintBox() {
                                         </AnimatePresence>
                                     </div>
 
-                                    {/* Department Selection */}
+                                    {/* Department */}
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Department</label>
+                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">
+                                            Department
+                                        </label>
                                         <select
                                             value={department}
                                             onChange={(e) => setDepartment(e.target.value)}
                                             className="w-full px-4 py-4 border border-slate-200 rounded-2xl bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-slate-900 shadow-sm appearance-none cursor-pointer"
                                         >
                                             <option value="">Select Dept</option>
-                                            {DEPARTMENTS.map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                                            {DEPARTMENTS.map(dept => (
+                                                <option key={dept.id} value={dept.id}>
+                                                    {dept.label}
+                                                </option>
+                                            ))}
                                         </select>
 
-                                        {/* NEW: Conditional Department Input */}
                                         <AnimatePresence>
-                                            {department === "Other" && (
+                                            {department === "99" && (
                                                 <motion.input
                                                     initial={{ opacity: 0, height: 0 }}
                                                     animate={{ opacity: 1, height: "auto" }}

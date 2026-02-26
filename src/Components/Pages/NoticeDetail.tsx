@@ -4,18 +4,25 @@ import { FiArrowLeft, FiCalendar, FiShare2, FiBookmark, FiDownload, FiFileText, 
 import { motion, useScroll, useSpring } from "framer-motion";
 import Navbar from "../Navbar";
 import clgimg from "../../assests/clg.jpeg";
+import { FcDepartment } from "react-icons/fc";
 
 const DEPARTMENTS = [
-    "Computer Science & Engineering", "Information Technology",
-    "Electronics & Communication", "Electrical & Electronics",
-    "Mechanical Engineering", "Civil Engineering",
-    "Artificial Intelligence", "MBA", "BBA", "B.Com"
+    { id: "1", label: "Computer Science & Engineering" },
+    { id: "2", label: "Information Technology" },
+    { id: "3", label: "Electronics & Communication" },
+    { id: "4", label: "Electrical & Electronics" },
+    { id: "5", label: "Mechanical Engineering" },
+    { id: "6", label: "Civil Engineering" },
+    { id: "7", label: "Artificial Intelligence" },
+    { id: "8", label: "MBA" },
+    { id: "9", label: "BBA" },
+    { id: "10", label: "B.Com" }
 ];
 
 export default function NoticeDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [selectedDept, setSelectedDept] = useState("");
+    const [selectedDeptId, setSelectedDeptId] = useState("");
     const [isDownloading, setIsDownloading] = useState(false);
 
     const { scrollYProgress } = useScroll();
@@ -67,11 +74,13 @@ The event will span three days, starting with a grand inaugural ceremony in the 
     const notice = allNotices.find((n) => n.id === id);
 
     const handleDownload = () => {
-        if (!selectedDept) return;
+        if (!selectedDeptId) return;
+        const deptLabel = DEPARTMENTS.find(d => d.id === selectedDeptId)?.label;
+
         setIsDownloading(true);
         setTimeout(() => {
             setIsDownloading(false);
-            alert(`Generating PDF for ${selectedDept}`);
+            alert(`Generating PDF for ${deptLabel}`);
         }, 2000);
     };
 
@@ -117,6 +126,15 @@ The event will span three days, starting with a grand inaugural ceremony in the 
                             <p className="text-xs font-black text-slate-800">{notice.department}</p>
                         </div>
                     </div>
+
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-emerald-50 text-fuchsia-300 flex items-center justify-center shrink-0"> <FcDepartment size={18} /> </div>
+                        <div>
+                            <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Department</p>
+                            <p className="text-xs font-black text-slate-800">BCA</p>
+                        </div>
+                    </div>
+
                     <div className="ml-auto">
                         <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-600 rounded-xl font-bold text-[10px] transition-all border border-slate-100">
                             <FiShare2 /> Share Notice
@@ -189,22 +207,26 @@ The event will span three days, starting with a grand inaugural ceremony in the 
                             <div className="grid md:grid-cols-3 gap-4">
                                 <div className="md:col-span-2 relative">
                                     <select
-                                        value={selectedDept}
-                                        onChange={(e) => setSelectedDept(e.target.value)}
+                                        value={selectedDeptId} // Use ID here
+                                        onChange={(e) => setSelectedDeptId(e.target.value)}
                                         className="w-full pl-5 pr-10 py-4 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 transition-all appearance-none font-bold text-slate-700 text-xs shadow-sm"
                                     >
                                         <option value="">Choose Your Department...</option>
-                                        {DEPARTMENTS.map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                                        {DEPARTMENTS.map(dept => (
+                                            <option key={dept.id} value={dept.id}>
+                                                {dept.label}
+                                            </option>
+                                        ))}
                                     </select>
                                     <FiChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                                 </div>
 
                                 <button
                                     onClick={handleDownload}
-                                    disabled={isDownloading || !selectedDept}
+                                    disabled={isDownloading || !selectedDeptId}
                                     className={`py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-xl ${isDownloading
-                                            ? "bg-green-500 text-white"
-                                            : "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200 disabled:opacity-50"
+                                        ? "bg-green-500 text-white"
+                                        : "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200 disabled:opacity-50"
                                         }`}
                                 >
                                     {isDownloading ? "Generating..." : <><FiDownload /> Download PDF</>}

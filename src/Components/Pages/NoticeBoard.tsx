@@ -10,22 +10,22 @@ const ALL_NOTICES = [
 ];
 
 export default function Notices() {
-    const [activeTab, setActiveTab] = useState("All");
+    const [activeTabId, setActiveTabId] = useState(""); 
     const [searchQuery, setSearchQuery] = useState("");
     const [displayNotices, setDisplayNotices] = useState(ALL_NOTICES);
 
     const categories = [
-        "All",
-        "Academic",
-        "Event",
-        "Emergency",
-        "Placement",
-        "Examination",
-        "Scholarship",
-        "Sports",
-        "Hostel",
-        "Library",
-        "Competition"
+        { id: "", label: "All" }, 
+        { id: "1", label: "Academic" },
+        { id: "2", label: "Event" },
+        { id: "3", label: "Emergency" },
+        { id: "4", label: "Placement" },
+        { id: "5", label: "Examination" },
+        { id: "6", label: "Scholarship" },
+        { id: "7", label: "Sports" },
+        { id: "8", label: "Hostel" },
+        { id: "9", label: "Library" },
+        { id: "10", label: "Competition" }
     ];
 
     useEffect(() => {
@@ -34,8 +34,14 @@ export default function Notices() {
     }, []);
 
     const filteredNotices = displayNotices.filter(notice => {
-        const matchesTab = activeTab === "All" || notice.category.toLowerCase() === activeTab.toLowerCase();
+        // Find the label of the current active ID to compare with notice.category string
+        const activeCategory = categories.find(cat => cat.id === activeTabId);
+        
+        const matchesTab = activeTabId === "" || 
+            (activeCategory && notice.category.toLowerCase() === activeCategory.label.toLowerCase());
+            
         const matchesSearch = notice.title.toLowerCase().includes(searchQuery.toLowerCase());
+        
         return matchesTab && matchesSearch;
     });
 
@@ -81,14 +87,14 @@ export default function Notices() {
                     <div className="flex overflow-x-auto flex-nowrap gap-4 pb-6 pt-2 px-2 relative z-10 scrollbar-light">
                         {categories.map((tab) => (
                             <button
-                                key={tab}
-                                onClick={() => setActiveTab(tab)}
-                                className={`px-8 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap border shrink-0 ${activeTab === tab
-                                        ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-300/50 scale-105"
-                                        : "bg-white text-slate-400 border-slate-100 hover:text-blue-600 shadow-sm hover:shadow-md"
+                                key={tab.id}
+                                onClick={() => setActiveTabId(tab.id)}
+                                className={`px-8 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap border shrink-0 ${activeTabId === tab.id
+                                    ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-300/50 scale-105"
+                                    : "bg-white text-slate-400 border-slate-100 hover:text-blue-600 shadow-sm hover:shadow-md"
                                     }`}
                             >
-                                {tab}
+                                {tab.label}
                             </button>
                         ))}
                     </div>

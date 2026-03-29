@@ -3,16 +3,15 @@ import Navbar from "../Navbar";
 import NoticeCard from "./NoticeCard";
 import { FiSearch, FiBell } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import apiClient from "@/api/apiUrl";
+import axios from "axios";
 
-const ALL_NOTICES = [
-    { id: "1", title: "End Semester Examination Schedule", category: "Academic", date: "Oct 24, 2025", content: "Schedule is out now. Please check the department portal for details." },
-    { id: "2", title: "Annual Cultural Fest", category: "Event", date: "Oct 22, 2025", content: "Registrations open for Utopia 2025. Sign up now!" },
-];
 
 export default function Notices() {
     const [activeTabId, setActiveTabId] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
-    const [displayNotices, setDisplayNotices] = useState(ALL_NOTICES);
+    const [displayNotices, setDisplayNotices] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const categories = [
         { id: "", label: "All" },
@@ -29,17 +28,46 @@ export default function Notices() {
         { id: "99", label: "Other" }
     ];
 
+    // 1. Fetch data from live API
+    const fetchNotices = async () => {
+        setLoading(true);
+        try {
+            const response = await apiClient.get("/api/notices/all");
+            if (response.data.Status === 1) {
+                const formattedNotices = response.data.data.map((n: any) => ({
+                    id: n.noticeId,
+                    title: n.title,
+                    category: n.categoryId === "99" ? n.otherCategory : n.categoryName,
+                    categoryId: n.categoryId,
+                    date: new Date(n.createdAt).toLocaleDateString('en-IN', {
+                        timeZone: 'Asia/Kolkata',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    }),
+                    content: n.content,
+                    image: n.image,
+                    pdf: n.pdf
+                }));
+                setDisplayNotices(formattedNotices);
+            }
+        } catch (error) {
+            console.error("Failed to fetch notices:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const adminNotices = JSON.parse(localStorage.getItem("campus_notices") || "[]");
-        setDisplayNotices([...adminNotices, ...ALL_NOTICES]);
+        fetchNotices();
     }, []);
 
+    // 2. Filter logic remains consistent with tab labels
     const filteredNotices = displayNotices.filter(notice => {
-        // Find the label of the current active ID to compare with notice.category string
         const activeCategory = categories.find(cat => cat.id === activeTabId);
-
-        const matchesTab = activeTabId === "" ||
-            (activeCategory && notice.category.toLowerCase() === activeCategory.label.toLowerCase());
+        
+        const matchesTab = activeTabId === "" || 
+            (activeCategory && notice.categoryId === activeTabId);
 
         const matchesSearch = notice.title.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -48,15 +76,14 @@ export default function Notices() {
 
     return (
         <div className="min-h-screen bg-slate-50 relative overflow-hidden font-sans pb-20">
+            {/* Background Effects */}
             <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23000' stroke-width='1'%3E%3Cpath d='M36 34v-4H20v4H15V20h4v-5h10v5h5v10h10V15h10v15h-5v4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}
             />
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-200/40 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-200/40 rounded-full blur-[120px] pointer-events-none" />
             <Navbar />
 
             <div className="relative z-10 max-w-7xl mx-auto pt-32 px-6">
-
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
                     <div>
@@ -102,30 +129,33 @@ export default function Notices() {
                 </div>
 
                 {/* Notices Grid */}
-                <motion.div
-                    layout
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
-                >
-                    <AnimatePresence mode="popLayout">
-                        {filteredNotices.map((notice, index) => (
-                            <motion.div
-                                key={notice.id}
-                                layout
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ duration: 0.3, delay: index * 0.05 }}
-                                className="flex"
-                            >
-                                <div className="w-full hover:translate-y-[-5px] transition-transform duration-300">
-                                    <NoticeCard notice={notice} />
-                                </div>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
+                {loading ? (
+                    <div className="text-center py-20 text-slate-400 font-bold uppercase tracking-widest animate-pulse">
+                        Loading Campus Notices...
+                    </div>
+                ) : (
+                    <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+                        <AnimatePresence mode="popLayout">
+                            {filteredNotices.map((notice, index) => (
+                                <motion.div
+                                    key={notice.id}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    className="flex"
+                                >
+                                    <div className="w-full hover:translate-y-[-5px] transition-transform duration-300">
+                                        <NoticeCard notice={notice} />
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
+                )}
 
-                {filteredNotices.length === 0 && (
+                {!loading && filteredNotices.length === 0 && (
                     <div className="text-center py-20">
                         <p className="text-slate-400 font-medium">No notices found matching your criteria.</p>
                     </div>

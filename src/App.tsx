@@ -7,6 +7,7 @@ import NoticeBoard from "./Components/Pages/NoticeBoard";
 import ComplaintBox from "./Components/Pages/ComplaintBox";
 import ComplaintStatus from "./Components/Pages/ComplaintStatus";
 import NoticeDetail from "./Components/Pages/NoticeDetail";
+import { ToastNotification } from "./Toast/ToastNotification";
 
 function LoginLayout() {
   return (
@@ -33,6 +34,7 @@ function MainLayout() {
 function App() {
   return (
     <Router>
+      <ToastNotification />
       <Routes>
         <Route element={<LoginLayout />}>
           <Route path="/" element={<StudentLogin />} />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiCalendar, FiShare2, FiBookmark, FiDownload, FiFileText, FiImage, FiChevronDown } from "react-icons/fi";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import Navbar from "../Navbar";
 import apiClient from "@/api/apiUrl"; // Ensure this points to your axios instance
 import { FcDepartment } from "react-icons/fc";
@@ -11,7 +11,7 @@ export default function NoticeDetail() {
     const navigate = useNavigate();
     const [notice, setNotice] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const [selectedDeptId, setSelectedDeptId] = useState("");
+    const [isHoveringImage, setIsHoveringImage] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
 
     const { scrollYProgress } = useScroll();
@@ -93,13 +93,52 @@ export default function NoticeDetail() {
                 </h1>
 
                 {notice.image && (
-                    <div
-                        onClick={() => window.open(notice.image, "_blank")}
-                        className="mb-10 rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-xl">
-                        <img src={notice.image} alt="Notice" className="w-full h-auto object-top object-cover max-h-[600px]" />
-                        <div className="bg-slate-50 px-8 py-3 flex items-center gap-3 text-slate-500 text-[9px] font-bold uppercase tracking-widest border-t border-slate-100">
-                            <FiImage size={14} /> Official Attachment
-                        </div>
+                    <div className="relative mb-10 group">
+                        <motion.div
+                            onMouseEnter={() => setIsHoveringImage(true)}
+                            onMouseLeave={() => setIsHoveringImage(false)}
+                            onClick={() => window.open(notice.image, "_blank")}
+                            className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-xl cursor-zoom-in relative"
+                        >
+                            <img
+                                src={notice.image}
+                                alt="Notice"
+                                className="w-full h-auto object-top object-cover max-h-[600px] transition-transform duration-500 group-hover:scale-105"
+                            />
+
+                            {/* Hover Overlay Hint */}
+                            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span className="bg-white/90 px-4 py-2 rounded-full text-xs font-bold text-slate-900 shadow-lg">
+                                    Hover to Expand / Click to Open
+                                </span>
+                            </div>
+
+                            <div className="bg-slate-50 px-8 py-3 flex items-center gap-3 text-slate-500 text-[9px] font-bold uppercase tracking-widest border-t border-slate-100">
+                                <FiImage size={14} /> Official Attachment
+                            </div>
+                        </motion.div>
+
+                        {/* Full Image Preview on Hover */}
+                        <AnimatePresence>
+                            {isHoveringImage && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="fixed inset-0 z-[200] flex items-center justify-center p-6 pointer-events-none"
+                                >
+                                    {/* Backdrop */}
+                                    <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" />
+
+                                    {/* The Full Image */}
+                                    <motion.img
+                                        src={notice.image}
+                                        className="relative z-10 max-w-full max-h-full rounded-2xl shadow-2xl object-contain border-4 border-white"
+                                        layoutId="noticeImage"
+                                    />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 )}
 

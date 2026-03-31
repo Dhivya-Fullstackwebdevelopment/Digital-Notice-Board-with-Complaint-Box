@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiSend, FiLock, FiUser } from "react-icons/fi";
+import { FiSend, FiLock, FiUser, FiChevronDown } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../Navbar";
 import apiClient from "@/api/apiUrl";
@@ -52,6 +52,7 @@ const DEPARTMENTS = [
 export default function ComplaintBox() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [submittedId, setSubmittedId] = useState("");
 
     const [formData, setFormData] = useState({
         studentName: "",
@@ -93,6 +94,7 @@ export default function ComplaintBox() {
 
             const response = await apiClient.post("/api/complaints/create", payload);
             if (response.data.Status === 1) {
+                setSubmittedId(response.data.data.complaintId);
                 setIsSubmitted(true);
                 NotifySuccess("Complaint submitted Successfully!");
             }
@@ -106,7 +108,19 @@ export default function ComplaintBox() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData(prev => {
+            const newData = { ...prev, [name]: value };
+
+            if (name === "categoryId" && value !== "99") {
+                newData.otherCategory = "";
+            }
+
+            if (name === "deptId" && value !== "99") {
+                newData.otherDept = "";
+            }
+
+            return newData;
+        });
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: "" }));
         }
@@ -150,46 +164,58 @@ export default function ComplaintBox() {
                                 </div>
 
                                 {/* Category & Dept Grid */}
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Issue Category</label>
-                                        <select name="categoryId" value={formData.categoryId} onChange={handleChange}
-                                            className="w-full px-4 py-4 border border-slate-200 rounded-2xl bg-white/50 outline-none text-slate-900 shadow-sm appearance-none cursor-pointer"
+                                {/* Issue Category */}
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Issue Category</label>
+                                    <div className="relative">
+                                        <select
+                                            name="categoryId"
+                                            value={formData.categoryId}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-4 border border-slate-200 rounded-2xl bg-white/50 outline-none text-slate-900 shadow-sm appearance-none cursor-pointer pr-10"
                                         >
                                             <option value="">Select Category</option>
                                             {CATEGORIES.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
                                         </select>
-                                        <ErrorMsg message={errors.categoryId} />
-
-                                        {formData.categoryId === "99" && (
-                                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
-                                                <input name="otherCategory" value={formData.otherCategory} onChange={handleChange} type="text" placeholder="Specify category"
-                                                    className="w-full mt-2 px-4 py-3 border text-black  placeholder-gray-500 border-blue-200 rounded-xl bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm"
-                                                />
-                                                <ErrorMsg message={errors.otherCategory} />
-                                            </motion.div>
-                                        )}
+                                        <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                                     </div>
+                                    <ErrorMsg message={errors.categoryId} />
 
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Department</label>
-                                        <select name="deptId" value={formData.deptId} onChange={handleChange}
-                                            className="w-full px-4 py-4 border border-slate-200 rounded-2xl bg-white/50 outline-none text-slate-900 shadow-sm appearance-none cursor-pointer"
+                                    {formData.categoryId === "99" && (
+                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                                            <input name="otherCategory" value={formData.otherCategory} onChange={handleChange} type="text" placeholder="Specify category"
+                                                className="w-full mt-2 px-4 py-3 border text-black placeholder-gray-500 border-blue-200 rounded-xl bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm"
+                                            />
+                                            <ErrorMsg message={errors.otherCategory} />
+                                        </motion.div>
+                                    )}
+                                </div>
+
+                                {/* Department */}
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Department</label>
+                                    <div className="relative">
+                                        <select
+                                            name="deptId"
+                                            value={formData.deptId}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-4 border border-slate-200 rounded-2xl bg-white/50 outline-none text-slate-900 shadow-sm appearance-none cursor-pointer pr-10"
                                         >
                                             <option value="">Select Dept</option>
                                             {DEPARTMENTS.map(dept => <option key={dept.id} value={dept.id}>{dept.label}</option>)}
                                         </select>
-                                        <ErrorMsg message={errors.deptId} />
-
-                                        {formData.deptId === "99" && (
-                                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
-                                                <input name="otherDept" value={formData.otherDept} onChange={handleChange} type="text" placeholder="Specify department"
-                                                    className="w-full mt-2 px-4 py-3 border text-black  placeholder-gray-500 border-blue-200 rounded-xl bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm"
-                                                />
-                                                <ErrorMsg message={errors.otherDept} />
-                                            </motion.div>
-                                        )}
+                                        <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                                     </div>
+                                    <ErrorMsg message={errors.deptId} />
+
+                                    {formData.deptId === "99" && (
+                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                                            <input name="otherDept" value={formData.otherDept} onChange={handleChange} type="text" placeholder="Specify department"
+                                                className="w-full mt-2 px-4 py-3 border text-black placeholder-gray-500 border-blue-200 rounded-xl bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm"
+                                            />
+                                            <ErrorMsg message={errors.otherDept} />
+                                        </motion.div>
+                                    )}
                                 </div>
 
                                 {/* Subject */}
@@ -226,11 +252,24 @@ export default function ComplaintBox() {
                                 <span className="text-3xl font-bold">✓</span>
                             </div>
                             <h2 className="text-3xl font-bold text-slate-900 mb-4">Report Received</h2>
-                            <p className="text-slate-500 text-lg leading-relaxed max-w-sm mx-auto">
-                                Your complaint has been submitted successfully with ID: <strong>CMP...</strong>
-                            </p>
-                            <button onClick={() => { setIsSubmitted(false); setFormData({ studentName: "", categoryId: "", otherCategory: "", deptId: "", otherDept: "", subject: "", description: "" }) }}
-                                className="mt-10 text-blue-600 font-bold hover:underline">
+
+                            <div className="space-y-4">
+                                <p className="text-slate-600 text-lg leading-relaxed max-w-sm mx-auto">
+                                    Your complaint has been submitted successfully with ID: <br />
+                                    <span className="text-blue-600 font-extrabold text-2xl tracking-wider">{submittedId}</span>
+                                </p>
+
+                                <p className="text-sm text-slate-500 bg-slate-50 py-3 px-6 rounded-xl border border-slate-100 inline-block">
+                                    <span className="font-bold text-slate-700">Please note:</span> Use this ID to track your complaint status in the dashboard.
+                                </p>
+                            </div>
+
+                            <button onClick={() => {
+                                setIsSubmitted(false);
+                                setSubmittedId(""); 
+                                setFormData({ studentName: "", categoryId: "", otherCategory: "", deptId: "", otherDept: "", subject: "", description: "" })
+                            }}
+                                className="mt-10 block w-full text-blue-600 font-bold hover:underline">
                                 File another report
                             </button>
                         </motion.div>

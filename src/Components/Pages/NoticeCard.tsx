@@ -8,7 +8,20 @@ export default function NoticeCard({ notice }: { notice: any }) {
     Event: "bg-purple-50 text-purple-600 border-purple-100",
     Holiday: "bg-green-50 text-green-600 border-green-100",
     Emergency: "bg-red-50 text-red-600 border-red-100 animate-pulse",
+
+    Placement: "bg-indigo-50 text-indigo-600 border-indigo-100",
+    Examination: "bg-orange-50 text-orange-600 border-orange-100",
+    Scholarship: "bg-emerald-50 text-emerald-600 border-emerald-100",
+    Sports: "bg-yellow-50 text-yellow-600 border-yellow-100",
+    Hostel: "bg-pink-50 text-pink-600 border-pink-100",
+    Library: "bg-cyan-50 text-cyan-600 border-cyan-100",
+    Competition: "bg-violet-50 text-violet-600 border-violet-100",
+    Other: "bg-slate-100 text-slate-600 border-slate-200",
   };
+  
+  const styleKey = Object.keys(categoryColors).includes(notice.category)
+    ? (notice.category as keyof typeof categoryColors)
+    : "Other";
 
   return (
     <motion.div
@@ -20,7 +33,7 @@ export default function NoticeCard({ notice }: { notice: any }) {
 
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
-            <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase border ${categoryColors[notice.category as keyof typeof categoryColors]}`}>
+            <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase border ${categoryColors[styleKey]}`}>
               {notice.category}
             </span>
             <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">

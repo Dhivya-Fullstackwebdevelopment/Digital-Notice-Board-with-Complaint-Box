@@ -62,7 +62,6 @@ export default function Notices() {
         fetchNotices();
     }, []);
 
-    // 2. Filter logic remains consistent with tab labels
     const filteredNotices = displayNotices.filter(notice => {
         const activeCategory = categories.find(cat => cat.id === activeTabId);
         

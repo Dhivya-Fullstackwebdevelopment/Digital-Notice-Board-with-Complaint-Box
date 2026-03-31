@@ -51,7 +51,9 @@ const Navbar = () => {
 
                 {/* Icons & Mobile Toggle */}
                 <div className="flex items-center gap-2 md:gap-4">
-                    <button className="p-2 text-slate-500 hover:text-blue-600 transition-colors relative">
+                    <button
+                        onClick={() => navigate('/Notifications')}
+                        className="p-2 text-slate-500 hover:text-blue-600 transition-colors relative">
                         <FiBell size={22} />
                         <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
                     </button>

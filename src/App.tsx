@@ -8,6 +8,7 @@ import ComplaintBox from "./Components/Pages/ComplaintBox";
 import ComplaintStatus from "./Components/Pages/ComplaintStatus";
 import NoticeDetail from "./Components/Pages/NoticeDetail";
 import { ToastNotification } from "./Toast/ToastNotification";
+import Notifications from "./Components/Pages/Home/Notifications";
 
 function LoginLayout() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/Notice/:id" element={<NoticeDetail />} />
           <Route path="/ComplaintBox" element={<ComplaintBox />} />
           <Route path="/ComplaintStatus" element={<ComplaintStatus />} />
+          <Route path="/Notifications" element={<Notifications />} />
         </Route>
 
         <Route

@@ -28,27 +28,40 @@ export default function Notices() {
         { id: "99", label: "Other" }
     ];
 
-    // 1. Fetch data from live API
     const fetchNotices = async () => {
         setLoading(true);
         try {
             const response = await apiClient.get("/api/notices/all");
             if (response.data.Status === 1) {
-                const formattedNotices = response.data.data.map((n: any) => ({
-                    id: n.noticeId,
-                    title: n.title,
-                    category: n.categoryId === "99" ? n.otherCategory : n.categoryName,
-                    categoryId: n.categoryId,
-                    date: new Date(n.createdAt).toLocaleDateString('en-IN', {
+                const formattedNotices = response.data.data.map((n: any) => {
+                    const dateObj = new Date(n.createdAt);
+
+                    const date = dateObj.toLocaleDateString('en-IN', {
                         timeZone: 'Asia/Kolkata',
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric'
-                    }),
-                    content: n.content,
-                    image: n.image,
-                    pdf: n.pdf
-                }));
+                    });
+
+                    const time = dateObj.toLocaleTimeString('en-IN', {
+                        timeZone: 'Asia/Kolkata',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+
+                    return {
+                        id: n.noticeId,
+                        title: n.title,
+                        category: n.categoryId === "99" ? n.otherCategory : n.categoryName,
+                        categoryId: n.categoryId,
+                        date: date,
+                        time: time,
+                        content: n.content,
+                        image: n.image,
+                        pdf: n.pdf
+                    };
+                });
                 setDisplayNotices(formattedNotices);
             }
         } catch (error) {
@@ -64,8 +77,8 @@ export default function Notices() {
 
     const filteredNotices = displayNotices.filter(notice => {
         const activeCategory = categories.find(cat => cat.id === activeTabId);
-        
-        const matchesTab = activeTabId === "" || 
+
+        const matchesTab = activeTabId === "" ||
             (activeCategory && notice.categoryId === activeTabId);
 
         const matchesSearch = notice.title.toLowerCase().includes(searchQuery.toLowerCase());

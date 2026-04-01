@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FiBell, FiCalendar } from "react-icons/fi";
+import { FiBell, FiCalendar, FiClock } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 export default function NoticeCard({ notice }: { notice: any }) {
@@ -18,7 +18,7 @@ export default function NoticeCard({ notice }: { notice: any }) {
     Competition: "bg-violet-50 text-violet-600 border-violet-100",
     Other: "bg-slate-100 text-slate-600 border-slate-200",
   };
-  
+
   const styleKey = Object.keys(categoryColors).includes(notice.category)
     ? (notice.category as keyof typeof categoryColors)
     : "Other";
@@ -36,9 +36,9 @@ export default function NoticeCard({ notice }: { notice: any }) {
             <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase border ${categoryColors[styleKey]}`}>
               {notice.category}
             </span>
-            <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
-              <FiCalendar size={12} />
-              {notice.date}
+            <div className="flex justify-between items-center space-x-4 text-slate-400 text-[10px] font-bold">
+              <span className="flex items-center gap-1"><FiCalendar size={10} /> {notice.date}</span>
+              <span className="flex items-center gap-1 text-blue-600 font-black"><FiClock size={10} /> {notice.time}</span>
             </div>
           </div>
 

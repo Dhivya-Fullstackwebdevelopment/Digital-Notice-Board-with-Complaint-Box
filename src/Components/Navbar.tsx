@@ -9,6 +9,11 @@ const Navbar = () => {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate('/', { replace: true });
+    };
+
     const navItems = [
         { label: 'Home', href: '/Home' },
         { label: 'Notice', href: '/Notices', isParentOf: '/Notice' },
@@ -88,7 +93,7 @@ const Navbar = () => {
                         </Link>
                     ))}
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={handleLogout}
                         className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide p-3 text-red-600 bg-red-50 rounded-xl"
                     >
                         <FiLogOut size={18} /> Logout

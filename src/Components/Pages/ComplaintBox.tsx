@@ -171,7 +171,7 @@ export default function ComplaintBox() {
                                 {/* Category & Dept Grid */}
                                 {/* Issue Category */}
                                 <div className="space-y-1">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Issue Category</label>
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Issue Category<span className="text-red-600">*</span></label>
                                     <div className="relative">
                                         <select
                                             name="categoryId"
@@ -198,7 +198,7 @@ export default function ComplaintBox() {
 
                                 {/* Department */}
                                 <div className="space-y-1">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Department</label>
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Department<span className="text-red-600">*</span></label>
                                     <div className="relative">
                                         <select
                                             name="deptId"
@@ -225,7 +225,7 @@ export default function ComplaintBox() {
 
                                 {/* Subject */}
                                 <div className="space-y-1">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Subject</label>
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Subject<span className="text-red-600">*</span></label>
                                     <input name="subject" value={formData.subject} onChange={handleChange} type="text" placeholder="E.g. Incorrect Internal Marks Displayed"
                                         className="w-full px-6 py-4 border border-slate-200 rounded-2xl bg-white/50 outline-none text-slate-900 shadow-sm"
                                     />
@@ -234,7 +234,7 @@ export default function ComplaintBox() {
 
                                 {/* Description */}
                                 <div className="space-y-1">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Description</label>
+                                    <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Description<span className="text-red-600">*</span></label>
                                     <textarea name="description" value={formData.description} onChange={handleChange} rows={5}
                                         placeholder="Provide as much detail as possible..."
                                         className="w-full px-6 py-4 border border-slate-200 rounded-2xl bg-white/50 outline-none text-slate-900 shadow-sm resize-none"

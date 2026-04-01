@@ -9,6 +9,7 @@ import ComplaintStatus from "./Components/Pages/ComplaintStatus";
 import NoticeDetail from "./Components/Pages/NoticeDetail";
 import { ToastNotification } from "./Toast/ToastNotification";
 import Notifications from "./Components/Pages/Home/Notifications";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function LoginLayout() {
   return (
@@ -41,23 +42,18 @@ function App() {
           <Route path="/" element={<StudentLogin />} />
         </Route>
 
-        <Route element={<MainLayout />}>
-          <Route path="/Home" element={<Homepage />} />
-          <Route path="/Notices" element={<NoticeBoard />} />
-          <Route path="/Notice/:id" element={<NoticeDetail />} />
-          <Route path="/ComplaintBox" element={<ComplaintBox />} />
-          <Route path="/ComplaintStatus" element={<ComplaintStatus />} />
-          <Route path="/Notifications" element={<Notifications />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/Home" element={<Homepage />} />
+            <Route path="/Notices" element={<NoticeBoard />} />
+            <Route path="/Notice/:id" element={<NoticeDetail />} />
+            <Route path="/ComplaintBox" element={<ComplaintBox />} />
+            <Route path="/ComplaintStatus" element={<ComplaintStatus />} />
+            <Route path="/Notifications" element={<Notifications />} />
+          </Route>
         </Route>
 
-        <Route
-          path="*"
-          element={
-            <div className="flex items-center justify-center h-[60vh] text-slate-400 font-bold">
-              404 | Page Not Found
-            </div>
-          }
-        />
+        <Route path="*" element={<div className="text-center py-20 text-slate-400">404 | Page Not Found</div>} />
       </Routes>
     </Router>
   );
